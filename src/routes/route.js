@@ -1,22 +1,26 @@
 const express = require('express');
 const router = express.Router();
-//const mongoose = require('mongoose')
 
-const authorController = require("../controller/authorController")
-const blogController = require("../controller/blogController")
-const middleware = require("../middleware/commonMiddleware")
+const authorController = require("../controller/authorController");
+const blogController = require("../controller/blogController");
+const middleware = require('../middleware/middleware.js');
 
-router.post("/login",authorController.login)
 
+//Author 
 router.post("/authors",authorController.createAuthor)
+
+router.post('/login', authorController.login) //login Phase 2
+
+//Blog
 
 router.post("/blogs",middleware.authentication,blogController.createBlogs)
 
-router.get("/getBlogs",middleware.authentication, blogController.getBlogs)
+router.get("/getBlogs",middleware.authentication,blogController.getBlogs)
 
 router.put("/blogs/:blogId",middleware.authentication,middleware.authorization, blogController.updateBlog)
 
-router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization, blogController.deleteBlog)
+router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,blogController.deleteBlog)
 
-router.delete("/deleteQuery",middleware.authentication, blogController.deleteParams)
+router.delete("/blogs",middleware.authentication,middleware.authorization,blogController.deleteParams)
+
 module.exports = router;

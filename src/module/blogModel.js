@@ -1,51 +1,50 @@
-const mongoose = require('mongoose')
+//Blog Model
 
-const blogSchema = new mongoose.Schema( {
-    title:{
-        type:String,
-        required:true,
-        trim:true
+const mongoose = require('mongoose');
+const objectId = mongoose.Schema.Types.ObjectId
 
+ const blogSchema = new mongoose.Schema({
+     "title" : {
+         type : String,
+         required : [true,'Title is required'],
+         trim : true
+     },
+     "body" : {
+        type : String,
+        required : [true,'Body is required'],
+        trim : true
     },
-    body:{
-        type:String,
-        required:true,
-        trim:true
+    "authorId" : {
+        type : objectId,
+        refs : 'Author',
+        required : [true,'Author Id is required'],
     },
-    authorId:{
-        type:mongoose.Schema.Types.ObjectId,
-        required:true,
-        trim:true,
-        ref:"ProjectAuthor"
+    "tags" : ["String"],
+    "category" : {
+        type : "String",    // [technology, entertainment, life style, food, fashion]
+        required : [true,'Category is required'],
+        trim : true
     },
-    tags:{
-        type: [String],
-        trim:true,
+    "subcategory" : ["String"],
+   
+    "deletedAt" : {
+        type:Date,
+       
     },
-    category:{
-        type:String,
-        required:true,
-        trim:true
+    "isDeleted" : {
+        type : Boolean,
+        default : false
     },
-    subcategory:{
-        type:[String],
-        trim:true
+    "publishedAt" : {
+        type:Date,
+        
     },
-    deletedAt:{
-        type:Date
-    },
-    isDeleted:{
-        type:Boolean,
-        default:false,
-        trim:true
-    },
-    publishedAt:Date,
-    isPublished:{
-        type:Boolean,
-        default:false,
-        trim:true
+    "isPublished" : {
+        type : Boolean,
+        default : false
     }
 
-},{timestamps:true})
+}
+, {timestamps : true})
 
-module.exports = mongoose.model('Blog',blogSchema) //blogs
+module.exports = mongoose.model('Blog', blogSchema);

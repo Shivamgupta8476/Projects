@@ -33,7 +33,7 @@ const createAuthor = async (req, res) => {
     const data = req.body;
 
     if (Object.keys(data).length == 0) {
-      return res.send({status:false,msg: "Feild Can't Empty.Please Enter Some Details" });
+      return res.status(400).send({status:false, msg: "Feild Can't Empty.Please Enter Some Details" });
     }
 
     if (!data.fname){
@@ -46,7 +46,7 @@ const createAuthor = async (req, res) => {
     }
 
     if (!data.lname) {
-        return res.status(400).send({status:false,msg:"Last name is missing"});
+        return res.status(400).send({status:false ,msg:"Last name is missing"});
     }
 
     //last Name validation by Rejex
@@ -55,16 +55,16 @@ const createAuthor = async (req, res) => {
     }
 
     if (!data.email){
-        return res.status(400).send({status: false,msg:"Email is missing"});
+        return res.status(400).send({status:false,msg:"Email is missing"});
     }
 
     //email validation by Rejex
     if (!validateEmail(data.email)) {
-      return res.status(400).send({ status: false, msg: "Invaild E-mail id." });
+      return res.status(400).send({status: false, msg: "Invaild E-mail id." });
     }
 
     if (!data.password) {
-        return res.status(400).send({ status: false, msg:"Password is missing"});
+        return res.status(400).send({status:false,msg:"Password is missing"});
     }
 
     //password validation by Rejex
@@ -72,16 +72,16 @@ const createAuthor = async (req, res) => {
       return res.status(400).send({status: false,msg: "Password should contain at-least one number,one special character and one capital letter",}); //password validation
     }
 
-    const container = await AuthorModel.findOne({ email: data.email }); //email exist or not
+    const email = await AuthorModel.findOne({ email: data.email }); //email exist or not
 
-    if (!container){
+    if (!email) {
     const author = await AuthorModel.create(data);
-      return res.status(201).send({status:true,data: author });
+      return res.status(201).send({status:true,msg: author });
     }
-  res.status(404).send({status: false, msg: "Email already exist" });
+    res.status(404).send({ status:false,msg: "Email already exist" });
   }
      catch (err) {
-    res.status(500).send({ error: err.message });
+    res.status(500).send({ status:false,error: err.message });
   }
 };
 
@@ -94,29 +94,28 @@ const login = async function (req, res) {
     const data = req.body;
 
     if (Object.keys(data).length == 0) {
-      return res.send({ status: false, msg: "Feild Can't Empty.Please Enter Some Details" }); //details is given or not
+      return res.status(400).send({ status:false,msg: "Feild Can't Empty.Please Enter Some Details" }); //details is given or not
     }
 
     let email = req.body.email;
     let password = req.body.password;
 
     if (!email){
-        return res.status(400).send({status: false,msg: "Email is missing" });
+        return res.status(400).send({ sataus:false,msg: "Email is missing" });
     }
 
     if (!password){
-        return res.status(400).send({ status: false, msg:"Password not given" });
+        return res.status(400).send({status:false,msg:"Password not given" });
     }
 
-    const container = await AuthorModel.findOne({email: email,password: password});
-    //verification for Email Password
+    const match = await AuthorModel.findOne({email: email,password: password,}); //verification for Email Password
 
-    if (!container)// No Data Stored in Match variable Beacuse no entry found with this email id nd password
-      return res.status(404).send({status: false, msg: "Email and Password not Matched" });
+    if (!match)// No Data Stored in Match variable Beacuse no entry found with this email id nd password
+      return res.status(404).send({status:false,msg: "Email and Password not Matched" });
 
     const token = jwt.sign(
       {
-        authorId: container._id.toString(), //login successfully give the token
+        authorId: match._id.toString(), //login successfully give the token
       },
       "group11" //secret key
     );
@@ -126,7 +125,7 @@ const login = async function (req, res) {
 
   catch (err)
   {
-    res.status(500).send({ error: err.message });
+    res.status(500).send({ status:false,error: err.message });
   }
 };
 
