@@ -31,10 +31,11 @@ const createAuthor = async (req, res) => {
 
 
     const data = req.body;
-
     if (Object.keys(data).length == 0) {
       return res.status(400).send({status:false, msg: "Feild Can't Empty.Please Enter Some Details" });
     }
+
+
 
     if (!data.fname){
      return res.status(400).send({ status:false,msg:"First name is missing"});

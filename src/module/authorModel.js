@@ -8,9 +8,7 @@ const mongoose = require('mongoose');
      "fname" : {
 
          type : String,
-
          required : [true,"fname is rquired"],
-
          trim : true
 
      },
@@ -48,7 +46,7 @@ const mongoose = require('mongoose');
         lowercase : true,
 
         trim:true,
-        
+
 
     },
 
@@ -59,7 +57,7 @@ const mongoose = require('mongoose');
         required : true,
 
         trim : true
-        
+
     }
 },
 

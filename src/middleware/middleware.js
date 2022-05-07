@@ -15,11 +15,7 @@ const authentication = async function (req, res, next) {
     }
 
     let decodedtoken = jwt.verify(token, "group11"); // to verify that signature is valid or not
-
-
-
-
-    next();
+   next();
   } catch (err) {
     res.status(500).send({ status:false, error: err.message });
   }
